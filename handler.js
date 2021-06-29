@@ -1,7 +1,7 @@
 'use strict';
 const https = require('https');
 
-module.exports.consumer = (event, context, callback) => {
+module.exports.producer = (event, context, callback) => {
   const response = {
     statusCode: 200,
     body: JSON.stringify({
@@ -12,7 +12,7 @@ module.exports.consumer = (event, context, callback) => {
   callback(null, response);
 };
 
-module.exports.producer = (event, context, callback) => {
+module.exports.consumer = (event, context, callback) => {
 
   let data = '';
 

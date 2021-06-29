@@ -1,0 +1,12 @@
+{
+  "name": "aws-serve-simple-http-endpoint",
+  "version": "1.0.0",
+  "description": "Example demonstrates how to setup a simple HTTP GET endpoint",
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "serverless-plugin-include-dependencies": "^4.1.0",
+    "serverless-plugin-lambda-insights": "^1.0.8",
+    "serverless-pseudo-parameters": "^2.5.0"
+  }
+}

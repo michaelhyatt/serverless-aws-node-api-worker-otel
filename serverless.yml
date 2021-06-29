@@ -1,0 +1,50 @@
+service: aws-node-simple-http-endpoint
+
+frameworkVersion: '2'
+
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  lambdaHashingVersion: '20201221'
+  region: ${file(env.json):aws-region}
+  tracing:
+    lambda: Active
+    apiGateway: true
+  environment:
+    AWS_LAMBDA_EXEC_WRAPPER: /opt/otel-handler
+    OPENTELEMETRY_COLLECTOR_CONFIG_FILE: /var/task/collector.yaml
+    APM_SERVER_URL: ${file(env.json):apm-server-url}
+    APM_SERVER_TOKEN: ${file(env.json):apm-server-token}
+
+
+functions:
+
+  producer:
+    handler: handler.producer
+    lambdaInsights: true
+    layers:
+      - arn:aws:lambda:${file(env.json):aws-region}:901920570463:layer:aws-otel-nodejs-ver-0-19-0:1     
+    environment:
+      CONSUMER_API: https://#{ApiGatewayRestApi}.execute-api.#{AWS::Region}.amazonaws.com/${self:provider.stage}/ping         
+    events:
+      - http:
+          method: post
+          path: produce  
+
+  consumer:
+    handler: handler.consumer
+    lambdaInsights: true 
+    layers:
+      - arn:aws:lambda:${file(env.json):aws-region}:901920570463:layer:aws-otel-nodejs-ver-0-19-0:1     
+    events:
+      - http:
+          path: ping
+          method: get
+
+
+plugins:
+  - serverless-plugin-lambda-insights
+  - serverless-pseudo-parameters
+  - serverless-plugin-include-dependencies  

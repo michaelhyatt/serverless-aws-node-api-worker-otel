@@ -1,0 +1,28 @@
+# Copy collector.yaml in the root directory
+# Set an environment variable 'OPENTELEMETRY_COLLECTOR_CONFIG_FILE' to '/var/task/collector.yaml'
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+      
+exporters:
+  awsxray:
+  logging:
+    loglevel: debug
+  otlp:
+    # APM server https endpoint without https://
+    endpoint: "${APM_SERVER_URL}"
+    headers:
+      # APM Server secret token
+      Authorization: "Bearer ${APM_SERVER_TOKEN}"
+
+#enables output for traces to Elastic, metrics is not working ATM
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      exporters: [logging, otlp, awsxray]
+    metrics:
+      receivers: [otlp]
+      exporters: [logging, otlp]

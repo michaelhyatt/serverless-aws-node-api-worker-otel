@@ -1,10 +1,16 @@
 # Simple HTTP Endpoint Example
 
-This example demonstrates how to setup a simple HTTP GET endpoint. Once you ping it, it will reply with the current time. While the internal function is name `currentTime` the HTTP endpoint is exposed as `ping`.
+This example demonstrates how to setup a pair of nodejs lambdas calling each other using HTTP/API-GW.
 
-## Use Cases
-
-- Wrapping an existing internal or external endpoint/service
+## Prerequisites
+* npm
+* serverless framework
+* git to clone the repo
+```
+npm install --save serverless-pseudo-parameters --save-dev
+npm install --save serverless-plugin-lambda-insights --save-dev
+npm install --save serverless-plugin-include-dependencies --save-dev
+```
 
 ## Before deploying it
 ```
@@ -20,7 +26,7 @@ serverless deploy
 ## Invoke the function locally
 
 ```bash
-serverless invoke local --function currentTime
+serverless invoke local --function producer
 ```
 
 Which should result in:
@@ -60,6 +66,7 @@ region: us-east-1
 api keys:
   None
 endpoints:
+  POST - https://2e16njizla.execute-api.us-east-1.amazonaws.com/dev/produce
   GET - https://2e16njizla.execute-api.us-east-1.amazonaws.com/dev/ping
 functions:
   serverless-simple-http-endpoint-dev-currentTime: arn:aws:lambda:us-east-1:488110005556:function:serverless-simple-http-endpoint-dev-currentTime
@@ -67,15 +74,12 @@ functions:
 
 ## Usage
 
-You can now invoke the Lambda directly and even see the resulting log via
+You can  send an HTTP request directly to the endpoint using a tool like curl
 
 ```bash
-serverless invoke --function currentTime --log
+curl -v --request POST --header 'Content-Type: application/json' --data-raw '{"name": "John"}' https://2e16njizla.execute-api.us-east-1.amazonaws.com/dev/produce
 ```
-
-or as send an HTTP request directly to the endpoint using a tool like curl
-
-```bash
-curl https://XXXXXXX.execute-api.us-east-1.amazonaws.com/dev/ping
+Should result in:
 ```
-
+{"message":"The response from the provider is {\"message\":\"Hello, the current time is 13:45:23 GMT+0000 (Coordinated Universal Time).\"}."}* Closing connection 0
+```

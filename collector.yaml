@@ -7,7 +7,6 @@ receivers:
       http:
       
 exporters:
-  awsxray:
   logging:
     loglevel: debug
   otlp:
@@ -17,12 +16,11 @@ exporters:
       # APM Server secret token
       Authorization: "Bearer ${APM_SERVER_TOKEN}"
 
-#enables output for traces to Elastic, metrics is not working ATM
 service:
   pipelines:
     traces:
       receivers: [otlp]
-      exporters: [logging, otlp, awsxray]
+      exporters: [logging, otlp]
     metrics:
       receivers: [otlp]
       exporters: [logging, otlp]

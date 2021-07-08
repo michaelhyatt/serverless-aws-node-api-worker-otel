@@ -1,7 +1,14 @@
 'use strict';
-const https = require('https');
+
+const opentelemetry = require("@opentelemetry/api")
+const { HttpTraceContext, CompositePropagator } = require("@opentelemetry/core")
+const request = require('request');
+
 
 module.exports.producer = (event, context, callback) => {
+
+  console.log(`Event: ${JSON.stringify(event)}`)
+
   const response = {
     statusCode: 200,
     body: JSON.stringify({
@@ -10,34 +17,34 @@ module.exports.producer = (event, context, callback) => {
   };
 
   callback(null, response);
+
 };
+
 
 module.exports.consumer = (event, context, callback) => {
 
-  let data = '';
+  let options = {
+    url: process.env.CONSUMER_API,
+    headers: {}
+  }
 
-  https.get( process.env.CONSUMER_API, (response) => {
-  
-    // called when a data chunk is received.
-    response.on('data', (chunk) => {
-      data += chunk;
-    });
-  
-    // called when the complete response is received.
-    response.on('end', () => {
-      console.log(data);
+  request.get( options, (err, res, body) => {
 
-      const response_final = {
-        statusCode: 200,
-        body: JSON.stringify({
-          message: `The response from the provider is ${data}.`,
-        }),
-      };
-      callback(null, response_final);
-    });
-  
-  }).on("error", (error) => {
-    console.log("Error: " + error.message);
+    if (err) {
+      return console.log(err);
+    }
+    console.log(`Status: ${res.statusCode}`);
+    console.log(body);
+
+    const response_final = {
+      statusCode: 200,
+      body: JSON.stringify({
+        message: `The response from the producer is ${body}.`,
+      }),
+    };
+
+    callback(null, response_final);
+
   });
 
 };

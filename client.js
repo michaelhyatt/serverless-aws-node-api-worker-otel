@@ -12,7 +12,7 @@ var apm = require('elastic-apm-node').start({
 
 const transaction = apm.startTransaction("client-top-level");
 
-const span = transaction.startSpan("client-request", { type: "request", subtype: "http"});
+const span = transaction.startSpan("client-request", "app", "http");
 
 const options = {
     url: process.argv[2],

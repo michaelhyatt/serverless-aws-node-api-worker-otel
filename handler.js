@@ -1,7 +1,5 @@
 'use strict';
 
-const opentelemetry = require("@opentelemetry/api")
-const { HttpTraceContext, CompositePropagator } = require("@opentelemetry/core")
 const request = require('request');
 
 

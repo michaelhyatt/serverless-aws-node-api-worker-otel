@@ -9,15 +9,12 @@ provider:
   stage: dev
   lambdaHashingVersion: '20201221'
   region: ${file(env.json):aws-region}
-  tracing:
-    lambda: PassThrough
   environment:
     AWS_LAMBDA_EXEC_WRAPPER: /opt/otel-handler
     OPENTELEMETRY_COLLECTOR_CONFIG_FILE: /var/task/collector.yaml
     APM_SERVER_URL: ${file(env.json):apm-server-url}
     APM_SERVER_TOKEN: ${file(env.json):apm-server-token}
     OTEL_PROPAGATORS: tracecontext
-    OTEL_LOG_LEVEL: debug
 
 functions:
 

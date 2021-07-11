@@ -18,7 +18,7 @@ provider:
 
 functions:
 
-  producer:
+  consumer:
     handler: handler.consumer
     layers:
       - arn:aws:lambda:${file(env.json):aws-region}:901920570463:layer:aws-otel-nodejs-ver-0-19-0:1     
@@ -29,7 +29,7 @@ functions:
           method: post
           path: produce  
 
-  consumer:
+  producer:
     handler: handler.producer
     layers:
       - arn:aws:lambda:${file(env.json):aws-region}:901920570463:layer:aws-otel-nodejs-ver-0-19-0:1     

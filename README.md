@@ -6,7 +6,7 @@ This example demonstrates how to setup a pair of nodejs lambdas calling each oth
 The provided lambdas require a `traceparent` header to be sent to them to activate the distributed tracing, so they need to be invoked using the provided `client.js` script and won't work when invoked directly with `curl` until [this](https://github.com/aws-observability/aws-otel-lambda/issues/118) is fixed.
 
 ## Prerequisites
-* Locally installed npm and nodejs (https://nodejs.dev/learn/how-to-install-nodejs).
+* Installed [npm and nodejs](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
 * [Serverless](https://www.serverless.com/) framework.
 * Git.
 
@@ -81,3 +81,6 @@ Status: 200
 {"message":"The response from the producer is {\"message\":\"Hello, the current time is 03:25:52 GMT+0000 (Coordinated Universal Time).\"}."}
 
 ```
+
+## Kibana APM should start showing traces.
+

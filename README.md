@@ -83,4 +83,5 @@ Status: 200
 ```
 
 ## Kibana APM should start showing traces.
-
+![image](https://user-images.githubusercontent.com/15670925/125223295-deaf2680-e30e-11eb-84d8-6187d71f56f6.png)
+![image](https://user-images.githubusercontent.com/15670925/125223330-ee2e6f80-e30e-11eb-914e-87473620b9b6.png)

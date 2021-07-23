@@ -22,7 +22,7 @@ provider:
     OTEL_EXPORTER_OTLP_ENDPOINT: "http://localhost:55681/v1/traces"
 
     # Turn on sampling, if not sent from the caller. This can potentially create a very large amount of data.
-    OTEL_TRACES_SAMPLER: AlwaysOn
+    OTEL_TRACES_SAMPLER: Always_On
 
     
 functions:

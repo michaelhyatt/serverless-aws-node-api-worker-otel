@@ -9,7 +9,7 @@ receivers:
 exporters:
   logging:
     loglevel: debug
-  otlp:
+  otlp/elastic:
     # APM server https endpoint without https://
     endpoint: "${APM_SERVER_URL}"
     headers:
@@ -20,7 +20,7 @@ service:
   pipelines:
     traces:
       receivers: [otlp]
-      exporters: [logging, otlp]
+      exporters: [logging, otlp/elastic]
     metrics:
       receivers: [otlp]
-      exporters: [logging, otlp]
+      exporters: [logging, otlp/elastic]

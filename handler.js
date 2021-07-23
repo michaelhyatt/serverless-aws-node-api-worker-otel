@@ -1,5 +1,9 @@
 'use strict';
 
+// Debug setting for OTel agent, turn on to get more visibility.
+// const { diag, DiagConsoleLogger, DiagLogLevel } = require("@opentelemetry/api");
+// diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.ALL);
+
 const request = require('request');
 
 
@@ -20,6 +24,8 @@ module.exports.producer = (event, context, callback) => {
 
 
 module.exports.consumer = (event, context, callback) => {
+
+  console.log(`Event: ${JSON.stringify(event)}`)
 
   let options = {
     url: process.env.CONSUMER_API,

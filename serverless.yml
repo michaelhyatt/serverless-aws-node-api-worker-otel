@@ -9,6 +9,8 @@ provider:
   stage: dev
   lambdaHashingVersion: '20201221'
   region: ${file(env.json):aws-region}
+  tracing:
+    lambda: PassThrough
   environment:
     AWS_LAMBDA_EXEC_WRAPPER: /opt/otel-handler
     OPENTELEMETRY_COLLECTOR_CONFIG_FILE: /var/task/collector.yaml
@@ -16,14 +18,18 @@ provider:
     APM_SERVER_TOKEN: ${file(env.json):apm-server-token}
     OTEL_PROPAGATORS: tracecontext
 
+    # Required setting until this https://github.com/open-telemetry/opentelemetry-js/pull/2331 is merged and released.
+    OTEL_EXPORTER_OTLP_ENDPOINT: "http://localhost:55681/v1/traces"
+
+    
 functions:
 
   consumer:
     handler: handler.consumer
     layers:
-      - arn:aws:lambda:${file(env.json):aws-region}:901920570463:layer:aws-otel-nodejs-ver-0-19-0:1     
+      - arn:aws:lambda:${file(env.json):aws-region}:901920570463:layer:aws-otel-nodejs-ver-0-23-0:1    
     environment:
-      CONSUMER_API: https://#{ApiGatewayRestApi}.execute-api.#{AWS::Region}.amazonaws.com/${self:provider.stage}/ping         
+      CONSUMER_API: https://#{ApiGatewayRestApi}.execute-api.${aws:region}.amazonaws.com/${self:provider.stage}/ping         
     events:
       - http:
           method: post
@@ -32,7 +38,7 @@ functions:
   producer:
     handler: handler.producer
     layers:
-      - arn:aws:lambda:${file(env.json):aws-region}:901920570463:layer:aws-otel-nodejs-ver-0-19-0:1     
+      - arn:aws:lambda:${file(env.json):aws-region}:901920570463:layer:aws-otel-nodejs-ver-0-23-0:1    
     events:
       - http:
           path: ping

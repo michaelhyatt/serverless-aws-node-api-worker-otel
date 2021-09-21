@@ -18,9 +18,6 @@ provider:
     APM_SERVER_TOKEN: ${file(env.json):apm-server-token}
     OTEL_PROPAGATORS: tracecontext
 
-    # Required setting until this https://github.com/open-telemetry/opentelemetry-js/pull/2331 is merged and released.
-    OTEL_EXPORTER_OTLP_ENDPOINT: "http://localhost:55681/v1/traces"
-
     # Turn on sampling, if not sent from the caller. This can potentially create a very large amount of data.
     OTEL_TRACES_SAMPLER: Always_On
 
@@ -30,7 +27,7 @@ functions:
   consumer:
     handler: handler.consumer
     layers:
-      - arn:aws:lambda:${file(env.json):aws-region}:901920570463:layer:aws-otel-nodejs-ver-0-23-0:1    
+      - arn:aws:lambda:${file(env.json):aws-region}:901920570463:layer:aws-otel-nodejs-ver-0-24-0:2    
     environment:
       CONSUMER_API: https://#{ApiGatewayRestApi}.execute-api.${aws:region}.amazonaws.com/${self:provider.stage}/ping         
     events:
@@ -41,7 +38,7 @@ functions:
   producer:
     handler: handler.producer
     layers:
-      - arn:aws:lambda:${file(env.json):aws-region}:901920570463:layer:aws-otel-nodejs-ver-0-23-0:1    
+      - arn:aws:lambda:${file(env.json):aws-region}:901920570463:layer:aws-otel-nodejs-ver-0-24-0:2   
     events:
       - http:
           path: ping

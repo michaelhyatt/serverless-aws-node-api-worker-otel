@@ -27,7 +27,7 @@ functions:
   consumer:
     handler: handler.consumer
     layers:
-      - arn:aws:lambda:${file(env.json):aws-region}:901920570463:layer:aws-otel-nodejs-ver-0-24-0:2    
+      - arn:aws:lambda:${file(env.json):aws-region}:901920570463:layer:aws-otel-nodejs-amd64-ver-1-0-1:2   
     environment:
       CONSUMER_API: https://#{ApiGatewayRestApi}.execute-api.${aws:region}.amazonaws.com/${self:provider.stage}/ping         
     events:
@@ -38,7 +38,7 @@ functions:
   producer:
     handler: handler.producer
     layers:
-      - arn:aws:lambda:${file(env.json):aws-region}:901920570463:layer:aws-otel-nodejs-ver-0-24-0:2   
+      - arn:aws:lambda:${file(env.json):aws-region}:901920570463:layer:aws-otel-nodejs-amd64-ver-1-0-1:2   
     events:
       - http:
           path: ping
